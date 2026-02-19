@@ -12,6 +12,31 @@ summary:
 - "Deep, hands-on technical expertise across software engineering, full-stack development, data platforms, AI/advanced analytics and modern digital infrastructures, with the ability to abstract technology into scalable operating models."
 - "Proven leadership at the intersection of strategy and execution, translating C-level priorities into implementable solutions."
 - "Distinctive blend of China execution experience and HQ governance depth; balancing speed and pragmatism with stability, compliance and long-term sustainability."
+experience_fusion:
+  title: "Experience Fusion"
+  description: "How core experiences combine into the plays I lead today."
+  inputs:
+    - label: "Software & Digitalisation"
+      bullets:
+        - "Very experienced in full-stack software development."
+    - label: "Governance"
+      bullets:
+        - "Very experienced in UI/UX and product design."
+    - label: "China"
+      bullets:
+        - "Lead international teams of internal and external experts."
+  outputs:
+    - label: "Digitalisation China"
+      alias: "(a)"
+      sources: ["Software & Digitalisation", "China"]
+      bullets:
+        - "Development E/E"
+        - "Corporate Interfaces"
+    - label: "Corporate Digitalisation"
+      alias: "(b)"
+      sources: ["Software & Digitalisation", "Governance"]
+      bullets:
+        - "Standardization and technology decision"
 
 signature_highlights:
   - title: "Global Audit Digitisation & Standards"
