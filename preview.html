@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Executive CV Preview</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
+    button {
+      font: inherit;
+      padding: 0.35rem 0.85rem;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: #0f1c3f;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span>Executive CV Preview (auto-refreshes on file change)</span>
+    <button id="refreshButton">Force Refresh</button>
+  </header>
+  <iframe id="pdfFrame" src="output/executive_cv.pdf"></iframe>
+
+  <script>
+    const pdfPath = "output/executive_cv.pdf";
+    const frame = document.getElementById("pdfFrame");
+    const refreshButton = document.getElementById("refreshButton");
+    let lastModified = null;
+
+    async function checkForUpdate() {
+      try {
+        const response = await fetch(pdfPath, { method: "HEAD", cache: "no-cache" });
+        if (!response.ok) return;
+        const modified = response.headers.get("Last-Modified");
+        if (modified && modified !== lastModified) {
+          lastModified = modified;
+          reloadPdf();
+        }
+      } catch (err) {
+        console.warn("PDF refresh check failed:", err);
+      }
+    }
+
+    function reloadPdf() {
+      const timestamp = Date.now();
+      frame.src = `${pdfPath}?t=${timestamp}`;
+    }
+
+    refreshButton.addEventListener("click", reloadPdf);
+
+    // Initial timestamp to avoid caching issues
+    reloadPdf();
+    setInterval(checkForUpdate, 2000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+name: "Moritz Jaeckel"
+role: "Head of Processes, Digitalisation & Governance"
+positioning: "Digital Transformation | Data Platforms | AI Governance | Global Operating Models"
+location: "Munich, Germany"
+contact:
+  email: "moritz.jaeckel@icloud.com"
+  phone: "+49 151 25160783"
+  linkedin: "linkedin.com/in/moritz-jaeckel-a9510a73"
+  website: "moritz-jaeckel.de"
+summary:
+- "Leader with 10+ years of experience designing and scaling digital transformation and governance capabilities globally."
+- "Deep, hands-on technical expertise across software engineering, full-stack development, data platforms, AI/advanced analytics and modern digital infrastructures, with the ability to abstract technology into scalable operating models."
+- "Proven leadership at the intersection of strategy and execution, translating C-level priorities into implementable solutions."
+- "Distinctive blend of China execution experience and HQ governance depth; balancing speed and pragmatism with stability, compliance and long-term sustainability."
+
+signature_highlights:
+  - title: "Global Audit Digitisation & Standards"
+    detail: "Scaled digital audit methods, processes and standards across multiple entities, improving transparency, consistency and risk coverage."
+  - title: "AI Governance & Automation"
+    detail: "Established AI-enabled governance approaches and automation roadmaps for audit/control environments, accelerating detection and reducing manual effort."
+  - title: "China ↔ HQ Operating Model"
+    detail: "Aligned governance and delivery between China JV execution and German HQ expectations, reducing interface friction and decision cycle times."
+experience:
+  - company: "BMW Group – Corporate Audit"
+    role: "Head of Processes, Digitalisation & Governance"
+    location: "Munich, Germany"
+    period: "Dec 2020 – Present"
+    bullets:
+      - "Own and modernise the end-to-end global audit process portfolio, enabling scalable execution across regions and entities."
+      - "Lead cross-functional technology specialists to deliver the digital audit roadmap covering automation, analytics tooling, process mining and AI-enabled controls."
+      - "Designed roles, decision forums and guardrails that accelerate delivery while improving auditability, traceability and risk transparency."
+      - "Advise senior stakeholders on transformation priorities, AI risk readiness and governance design for global rollout."
+      - "Embedded a platform mindset around audit digitalisation so teams reuse components instead of launching one-off initiatives."
+  - company: "BMW Group – Corporate Audit"
+    role: "Lead Data Science / Digital Transformation"
+    location: "Munich, Germany"
+    period: "Feb 2018 – Dec 2020"
+    bullets:
+      - "Established Corporate Audit’s data science and advanced analytics capability and embedded it into methodology and planning."
+      - "Delivered analytics-driven audits and continuous monitoring approaches to focus effort on highest-risk areas."
+      - "Industrialised automation, robotics and data pipelines for repeatable audit execution and management reporting."
+      - "Ensured technical solutions remained auditable, explainable and aligned with governance standards."
+  - company: "BMW China Services Ltd."
+    role: "Head of Test Strategy & Test Automation (Infotainment / Software Validation)"
+    location: "Beijing, China"
+    period: "Oct 2016 – Jan 2018"
+    bullets:
+      - "Built and led a software validation team for market-specific infotainment, covering strategy, tooling and automation at scale."
+      - "Introduced simulated customer-behaviour testing to automate complex end-to-end scenarios and improve release confidence."
+      - "Managed localisation requirements and stakeholder alignment between China operations and headquarters expectations."
+  - company: "BMW China Services Ltd."
+    role: "Project Lead Test Automation"
+    location: "Beijing, China"
+    period: "Mar 2015 – Sep 2016"
+    bullets:
+      - "Delivered automation foundations and enabled teams to adopt repeatable quality gates in software delivery."
+      - "Coordinated suppliers and BMW engineering to ensure compliance with quality and timing requirements."
+      - "Implemented early predictive quality checks that reduced defects and rework across releases."
+education:
+  - school: "RWTH Aachen University"
+    degree: "M.Sc. Mechanical Engineering & Data Science Focus"
+    period: "2012 – 2014"
+  - school: "Technion – Israel Institute of Technology"
+    degree: "Engineering Exchange Programme"
+    period: "2013"
+  - school: "Tsinghua University, China"
+    degree: "Engineering & Innovation Semester"
+    period: "2011"
+  - school: "University of Cape Town"
+    degree: "Global Engineering Programme"
+    period: "2010"
+skills:
+  - category: "Leadership & Governance"
+    items: ["Digital Transformation", "Corporate Audit", "AI Governance", "Risk & Controls", "Operating Model Design"]
+  - category: "Technology"
+    items: ["Data Science", "Cloud Analytics", "Automation Platforms", "AI/ML Ops", "Process Mining"]
+  - category: "Business"
+    items: ["China Market Operations", "Joint Venture Management", "Compliance Strategy", "Executive Stakeholder Management"]
+languages:
+  - "German – Native"
+  - "English – Fluent"
+  - "Chinese – Good"
+  - "Korean – Basic"
+  - "Russian – Basic"
+interests: ["Future Mobility", "AI Ethics", "Trail Running", "Modern Architecture"]
