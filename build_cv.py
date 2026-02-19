@@ -47,7 +47,16 @@ ACCENT_COLOR = colors.HexColor("#0F1C3F")
 def output_path_for_today() -> Path:
     """Create dated output filename for uniqueness per run."""
     date_tag = datetime.now().strftime("%Y%m%d")
-    return OUTPUT_DIR / f"executive_cv_{date_tag}.pdf"
+    base_name = f"executive_cv_{date_tag}.pdf"
+    candidate = OUTPUT_DIR / base_name
+    if not candidate.exists():
+        return candidate
+    suffix = 1
+    while True:
+        candidate = OUTPUT_DIR / f"executive_cv_{date_tag}_{suffix}.pdf"
+        if not candidate.exists():
+            return candidate
+        suffix += 1
 
 
 def register_fonts() -> None:
@@ -202,7 +211,7 @@ def build_styles() -> StyleSheet1:
             fontSize=10,
             leading=12,
             textColor=ACCENT_COLOR,
-            alignment=1,
+            alignment=0,
         )
     )
     styles.add(
@@ -231,7 +240,7 @@ def build_styles() -> StyleSheet1:
             fontSize=9,
             leading=11,
             textColor=colors.HexColor("#4A4A4A"),
-            alignment=1,
+            alignment=0,
         )
     )
     return styles
@@ -343,7 +352,7 @@ class MergingArrowsFlowable(Flowable):
         self.width = CONTENT_WIDTH
         self.left_x = 0
         self.input_box_width = 152
-        self.input_box_height = 28
+        self.input_box_height = 32
         self.input_gap = 22
         self.input_bullet_gap = 6
         self.output_gap = 26
@@ -353,6 +362,7 @@ class MergingArrowsFlowable(Flowable):
         self.output_padding_top = 8
         self.output_padding_bottom = 8
         self.bullet_spacing = 3
+        self.input_padding = 8
         self.color = ACCENT_COLOR
         self.top_padding = 8
         self.bottom_padding = 8
@@ -383,25 +393,33 @@ class MergingArrowsFlowable(Flowable):
     def _prepare_inputs(self) -> List[Dict[str, Any]]:
         processed: List[Dict[str, Any]] = []
         bullet_style = self.styles["DiagramInputBullet"]
-        bullet_width = self.input_box_width - 14
+        label_style = self.styles["DiagramInput"]
+        content_width = self.input_box_width - 2 * self.input_padding
         for entry in self.inputs:
+            placeholder_prefix = entry.get("badge") or "0"
+            label_markup = f"{self._escape_text(str(placeholder_prefix))}. {self._escape_text(entry.get('label', ''))}"
+            label_height = self._measure(label_markup, content_width, label_style)
             bullet_markups = [
                 f"&bull;&nbsp;{self._escape_text(text)}" for text in entry.get("bullets", [])
             ]
             bullet_heights = [
-                self._measure(markup, bullet_width, bullet_style) for markup in bullet_markups
+                self._measure(markup, content_width, bullet_style) for markup in bullet_markups
             ]
             bullet_height_total = sum(bullet_heights)
             if bullet_heights:
                 bullet_height_total += self.bullet_spacing * (len(bullet_heights) - 1)
-            block_height = self.input_box_height
-            if bullet_heights:
-                block_height += self.input_bullet_gap + bullet_height_total
+            block_height = max(
+                self.input_box_height,
+                self.input_padding * 2
+                + label_height
+                + (self.input_bullet_gap + bullet_height_total if bullet_heights else 0),
+            )
             processed.append(
                 {
                     **entry,
                     "bullet_markups": bullet_markups,
                     "bullet_heights": bullet_heights,
+                    "label_height": label_height,
                     "height": block_height,
                 }
             )
@@ -492,18 +510,18 @@ class MergingArrowsFlowable(Flowable):
         nodes: List[Dict[str, Any]] = []
         if not self.processed_inputs:
             return nodes
-        start_top = (
-            self.height - self.top_padding - (self.diagram_height - self.input_height_total) / 2
-        )
+        start_top = self.height - self.top_padding - (self.diagram_height - self.input_height_total) / 2
         offset = 0.0
         for idx, entry in enumerate(self.processed_inputs):
-            center_y = start_top - offset - self.input_box_height / 2
+            box_height = entry["height"]
+            center_y = start_top - offset - box_height / 2
             nodes.append(
                 {
                     "label": entry.get("label", ""),
                     "badge": entry.get("badge"),
                     "key": entry.get("key") or entry.get("label", ""),
                     "center": (self.left_x + self.input_box_width / 2, center_y),
+                    "height": box_height,
                     "entry": entry,
                 }
             )
@@ -536,11 +554,14 @@ class MergingArrowsFlowable(Flowable):
         bullet_style = self.styles["DiagramInputBullet"]
         for idx, node in enumerate(nodes):
             y_center = node["center"][1]
+            box_height = node["height"]
+            box_top = y_center + box_height / 2
+            box_left = self.left_x
             canvas.roundRect(
-                self.left_x,
-                y_center - self.input_box_height / 2,
+                box_left,
+                y_center - box_height / 2,
                 self.input_box_width,
-                self.input_box_height,
+                box_height,
                 6,
                 stroke=1,
                 fill=0,
@@ -548,19 +569,33 @@ class MergingArrowsFlowable(Flowable):
             prefix = node.get("badge") or str(idx + 1)
             label_markup = f"{self._escape_text(str(prefix))}. {self._escape_text(node.get('label', ''))}"
             paragraph = Paragraph(label_markup, style)
-            _, height = paragraph.wrap(self.input_box_width - 12, self.input_box_height)
-            paragraph.drawOn(canvas, self.left_x + 6, y_center - height / 2)
+            available_width = self.input_box_width - 2 * self.input_padding
+            _, label_height = paragraph.wrap(available_width, box_height)
+            paragraph.drawOn(
+                canvas,
+                box_left + self.input_padding,
+                box_top - self.input_padding - label_height,
+            )
             entry = node["entry"]
             bullet_markups = entry.get("bullet_markups", [])
             bullet_heights = entry.get("bullet_heights", [])
             if bullet_markups:
-                cursor_y = y_center - self.input_box_height / 2 - self.input_bullet_gap
-                bullet_width = self.input_box_width - 12
+                cursor_y = (
+                    box_top
+                    - self.input_padding
+                    - label_height
+                    - self.input_bullet_gap
+                )
+                bullet_width = available_width
                 for markup, measured_height in zip(bullet_markups, bullet_heights):
                     bullet_para = Paragraph(markup, bullet_style)
                     _, para_height = bullet_para.wrap(bullet_width, measured_height)
+                    bullet_para.drawOn(
+                        canvas,
+                        box_left + self.input_padding,
+                        cursor_y - para_height,
+                    )
                     cursor_y -= para_height
-                    bullet_para.drawOn(canvas, self.left_x + 6, cursor_y)
                     cursor_y -= self.bullet_spacing
 
     def _draw_output_nodes(self, canvas, nodes: List[Dict[str, Any]]) -> None:
